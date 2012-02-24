@@ -1,0 +1,91 @@
+#!/usr/bin/make -f
+
+script = $(CURDIR)/index.php
+script2 = $(CURDIR)/rss_php.php
+configuration = $(CURDIR)/feeds.conf
+launcher = $(CURDIR)/cw1-6005-ap20g11.desktop
+sh_launcher = $(CURDIR)/launcher
+command = $(CURDIR)/get_news
+package_manual = $(CURDIR)/debian/cw1-6005-ap20g11.1.gz
+commands_manual = $(CURDIR)/debian/get_news.1.gz
+
+DEST1 = $(CURDIR)/debian/cw1-6005-ap20g11/usr/share/cw1-6005-ap20g11
+DEST2 = $(CURDIR)/debian/cw1-6005-ap20g11/usr/share/applications
+DEST3 = $(CURDIR)/debian/cw1-6005-ap20g11/usr/bin
+DEST4 = $(CURDIR)/debian/cw1-6005-ap20g11/usr/share/man/man1
+
+build: build-stamp
+build: build-arch build-indep
+
+build-arch: build-stamp
+build-indep: build-stamp
+   
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	dh_clean
+
+install: build clean $(script) $(script2) $(configuration) $(launcher) $(sh_launcher) $(command) $(package_manual) $(commands_manual)
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+
+	mkdir -m 755 -p $(DEST1)
+	mkdir -m 755 -p $(DEST2)
+	mkdir -m 755 -p $(DEST3)
+	mkdir -m 755 -p $(DEST4)
+
+	install -m 666 $(script) $(DEST1)
+	install -m 666 $(script2) $(DEST1)
+	install -m 666 $(configuration) $(DEST1)
+	install -m 777 $(launcher) $(DEST2)
+	install -m 777 $(sh_launcher) $(DEST1)
+	install -m 666 $(command) $(DEST3)
+	install -m 666 $(package_manual) $(DEST4)
+	install -m 666 $(commands_manual) $(DEST4)
+
+
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installexamples
+#	dh_installmenu
+#	dh_installdebconf
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installcatalogs
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+#	dh_installcron
+#	dh_installinfo
+#	dh_installwm
+#	dh_installudev
+#	dh_lintian
+#	dh_bugfiles
+#	dh_undocumented
+	dh_installman
+	dh_link
+	dh_compress
+	dh_fixperms
+#	dh_perl
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+# Build architecture-dependent files here.
+binary-arch: build install
+# We have nothing to do by default.
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install
