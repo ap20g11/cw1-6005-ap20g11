@@ -1,0 +1,15 @@
+Source: cw1-6005-ap20g11
+Section: net
+Priority: optional
+Maintainer: Antonis Popovidis <ap20g11@soton.ac.uk>
+Build-Depends: debhelper (>= 7.0.50)
+Standards-Version: 3.8.4
+Homepage: https://github.com/info6005/6005_cw1_2012
+
+Package: cw1-6005-ap20g11
+Architecture: any
+Depends: ${misc:Depends}, php5-cli
+Description: 6005_cw1_2012 - the Simple PHP RSS Reader for INFO6005
+ This is part of a coursework for Students on the INFO6005 course 
+ at the University of Southampton. In this course students are 
+ expected to package some code for distribution on the debian/ubuntu platform
